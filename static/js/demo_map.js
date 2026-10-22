@@ -378,19 +378,6 @@ function clearRoute() {
     showToast('Route cleared', 'info');
     console.log('Route cleared');
 }
-    
-    document.getElementById('routeInfo').innerHTML = `
-        <div class="text-center text-muted py-4">
-            <i class="fas fa-route fa-3x mb-3 opacity-25"></i>
-            <p>No route calculated yet</p>
-        </div>
-    `;
-    
-    document.getElementById('algoStats').style.display = 'none';
-    document.getElementById('directions').innerHTML = '<p class="text-muted">Route directions will appear here</p>';
-    
-    console.log('Route cleared');
-}
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
