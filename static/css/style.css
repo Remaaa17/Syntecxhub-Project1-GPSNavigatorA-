@@ -1,0 +1,635 @@
+/* Enhanced Custom styles for GPS Navigator */
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    --info-gradient: linear-gradient(135deg, #3494e6 0%, #ec6ead 100%);
+    --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* Navbar Enhancements */
+.navbar {
+    background: var(--primary-gradient) !important;
+    backdrop-filter: blur(10px);
+}
+
+.bg-gradient {
+    background: var(--primary-gradient);
+}
+
+.bg-gradient-success {
+    background: var(--success-gradient);
+}
+
+.bg-gradient-info {
+    background: var(--info-gradient);
+}
+
+.bg-gradient-primary {
+    background: var(--primary-gradient);
+}
+
+/* Status Indicator */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Enhanced Cards */
+.card {
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+.card-header {
+    border: none;
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+}
+
+/* Map Container */
+
+#routeInfo {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#directions {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.route-stat {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f8f9fa;
+    border-left: 4px solid #007bff;
+    border-radius: 4px;
+}
+
+.route-stat strong {
+    color: #007bff;
+}
+
+.direction-step {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f8f9fa;
+    border-left: 3px solid #28a745;
+    border-radius: 4px;
+}
+
+.direction-step:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.alert-custom {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border-left: 4px solid #dc3545;
+    color: #721c24;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    color: #0c5460;
+}
+
+/* Route comparison styles */
+.route-comparison {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.route-card {
+    flex: 1;
+    min-width: 200px;
+    padding: 15px;
+    background-color: white;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.route-card:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.route-card.selected {
+    border-color: #28a745;
+    background-color: #f0f8f5;
+}
+
+.route-card h6 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.route-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.map-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.marker-start {
+    background-color: #28a745;
+}
+
+.marker-end {
+    background-color: #dc3545;
+}
+
+/* Statistics panel */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stat-item {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .col-md-3, .col-md-9 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    #map {
+        height: 50vh !important;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Stats Mini */
+.stats-mini {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.stat-mini-item {
+    text-align: center;
+    padding: 15px 10px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e3eeff 100%);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.stat-mini-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stat-mini-item i {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-mini-item span {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.stat-mini-item small {
+    color: #666;
+    font-size: 0.75rem;
+}
+
+/* Map Container Enhancements */
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border-radius: 0 0 15px 15px;
+}
+
+.map-instructions {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 999;
+    text-align: center;
+}
+
+.map-instructions i {
+    font-size: 2rem;
+    color: #667eea;
+}
+
+/* Enhanced Route Cards for Comparison */
+.comparison-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.comparison-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.comparison-card:hover::before {
+    transform: scaleX(1);
+}
+
+.comparison-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border-color: #667eea;
+}
+
+.comparison-card.selected {
+    border-color: #38ef7d;
+    background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+}
+
+.comparison-card .route-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.comparison-card .route-type {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.comparison-card .route-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.comparison-card .route-metric:last-child {
+    border-bottom: none;
+}
+
+.comparison-card .metric-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.comparison-card .metric-value {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+/* Enhanced Direction Steps */
+.direction-step {
+    padding: 15px;
+    margin: 10px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-left: 4px solid #28a745;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.direction-step:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.direction-step::before {
+    content: attr(data-step);
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #28a745;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.direction-step i {
+    margin-right: 10px;
+    color: #28a745;
+}
+
+/* Enhanced Button Styles */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+}
+
+.btn-success {
+    background: var(--success-gradient);
+}
+
+.btn-info {
+    background: var(--info-gradient);
+}
+
+/* Loading Animation */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+    animation: rotate 1s linear infinite;
+}
+
+/* Toast Notifications */
+.toast {
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Form Enhancements */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.input-group {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Route Statistics */
+.route-stat {
+    padding: 15px;
+    margin: 8px 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-left: 4px solid #007bff;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.route-stat:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.route-stat strong {
+    color: #007bff;
+    font-size: 0.9rem;
+}
+
+.route-stat span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.route-stat i {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+/* Progress Bar for Loading */
+.progress {
+    height: 4px;
+    border-radius: 0;
+    background: transparent;
+}
+
+.progress-bar {
+    background: var(--primary-gradient);
+    animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+/* Responsive Design Enhancements */
+@media (max-width: 992px) {
+    .col-lg-3, .col-lg-9 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    #map {
+        height: 50vh !important;
+    }
+    
+    .stats-mini {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .map-instructions {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-mini {
+        grid-template-columns: 1fr;
+    }
+    
+    .comparison-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Floating Action Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Glow Effect */
+.glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+    }
+}

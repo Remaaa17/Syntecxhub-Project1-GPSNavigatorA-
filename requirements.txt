@@ -1,0 +1,12 @@
+# Core Dependencies (Essential)
+osmnx>=1.9.0
+networkx>=3.2.0
+folium>=0.15.0
+flask>=3.0.0
+geopy>=2.4.0
+
+# Visualization (Optional - install separately if needed)
+# matplotlib>=3.8.0
+# plotly>=5.18.0
+# pandas>=2.1.0
+# scipy>=1.11.0
