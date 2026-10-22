@@ -12,6 +12,12 @@
 
 This project implements a real-world GPS navigation system using the A* (A-star) pathfinding algorithm. It finds optimal routes between locations in real cities using actual map data from OpenStreetMap, simulates traffic conditions, and provides multiple route options.
 
+## Demo Video
+
+https://github.com/Remaaa17/Syntecxhub-Project1-GPSNavigatorA-/assets/Demo.mp4
+
+> Watch the full demonstration of the GPS Navigator in action, showing route planning, traffic simulation, and interactive map features.
+
 ## Features
 
 ### Core Features (Phase 1)
