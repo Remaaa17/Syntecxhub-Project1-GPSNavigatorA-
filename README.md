@@ -12,6 +12,12 @@
 
 This project implements a real-world GPS navigation system using the A* (A-star) pathfinding algorithm. It finds optimal routes between locations in real cities using actual map data from OpenStreetMap, simulates traffic conditions, and provides multiple route options.
 
+### How It Works
+
+![GPS Navigation System Architecture](How_GPS_Navigation_Works.png)
+
+The diagram above illustrates how the GPS navigation system processes route requests, applies the A* algorithm, and returns optimized paths with turn-by-turn directions.
+
 ## Demo Video
 
 ![Demo Video](Demo.mp4)
