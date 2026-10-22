@@ -1,5 +1,11 @@
 # GPS Navigation System using A* Pathfinding Algorithm
 
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![Flask](https://img.shields.io/badge/flask-3.0+-green.svg)
+![JavaScript](https://img.shields.io/badge/javascript-ES6+-yellow.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/status-active-success.svg)
+
 **Syntecxhub AI Internship - Week 1 Project**
 
 ## 🎯 Project Overview
