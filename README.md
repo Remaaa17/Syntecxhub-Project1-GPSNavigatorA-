@@ -273,12 +273,9 @@ This project is created as part of Syntecxhub AI Internship Program.
 ## Contact
 
 For questions or feedback about this project:
-- Email: info@syntecxhub.com
-- Phone: +91 63937 80295
-- Website: www.syntecxhub.com
+- Email: reemosamasaid2004@gmail.com
+- Phone: 01070100321
 
 ---
 
 Star this repository if you find it helpful!
-
-Don't forget to share on LinkedIn and mention @Syntecxhub!
