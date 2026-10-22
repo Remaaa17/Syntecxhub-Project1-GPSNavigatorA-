@@ -1,0 +1,32 @@
+📋 FINAL PUSH COMMANDS
+======================
+
+After creating repository "Syntecxhub-Project1-GPS-Navigator" on GitHub:
+
+1. Open Command Prompt
+2. Copy and paste these commands ONE BY ONE:
+
+cd "c:\Users\Cairo Lap\OneDrive\Desktop\Syntecxhub_Internship\Syntecxhub_GPS_Navigator"
+
+git remote remove origin
+
+git remote add origin https://github.com/Remaaa17/Syntecxhub-Project1-GPS-Navigator.git
+
+git push -u origin main
+
+When prompted:
+- Username: Remaaa17
+- Password: [Your Personal Access Token from https://github.com/settings/tokens]
+
+Note: If you don't have a token:
+1. Go to: https://github.com/settings/tokens
+2. Click "Generate new token (classic)"
+3. Name: Git Push
+4. Check: repo (full control)
+5. Generate and copy the token
+6. Use it as password when pushing
+
+====================
+YOUR NEW REPOSITORY WILL BE AT:
+https://github.com/Remaaa17/Syntecxhub-Project1-GPS-Navigator
+====================
