@@ -189,65 +189,6 @@ async function loadMap() {
         loadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Load Map';
     }
 }
-        <div class="alert alert-info">
-            <div class="spinner-border spinner-border-sm me-2"></div>
-            ${useRealData ? 'Downloading real map data...' : 'Generating sample data...'}
-        </div>
-    `;
-    loadBtn.disabled = true;
-    
-    try {
-        const response = await fetch('/api/load_map', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                place_name: selectedCity,
-                use_real_data: useRealData
-            })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            mapLoaded = true;
-            
-            // Update map view
-            map.setView(data.bounds.center, 13);
-            
-            // Show success
-            const dataType = data.stats.data_source.includes('real') ? 'REAL' : 'SAMPLE';
-            statusDiv.innerHTML = `
-                <div class="alert alert-success">
-                    <strong>✓ Map loaded!</strong><br>
-                    <small>${data.message}</small>
-                </div>
-            `;
-            
-            // Update stats
-            document.getElementById('mapStats').style.display = 'block';
-            document.getElementById('dataSource').innerHTML = `
-                <i class="fas fa-${useRealData ? 'globe' : 'dice'} me-2"></i>
-                ${data.stats.data_source}
-            `;
-            document.getElementById('statNodes').textContent = data.stats.num_nodes.toLocaleString();
-            document.getElementById('statEdges').textContent = data.stats.num_edges.toLocaleString();
-            
-            console.log('Map loaded:', data.stats);
-        } else {
-            statusDiv.innerHTML = `<div class="alert alert-danger">Error: ${data.error}</div>`;
-        }
-    } catch (error) {
-        statusDiv.innerHTML = `
-            <div class="alert alert-danger">
-                Error: ${error.message}<br>
-                <small>Check console for details</small>
-            </div>
-        `;
-        console.error('Error loading map:', error);
-    } finally {
-        loadBtn.disabled = false;
-    }
-}
 
 // Find route
 async function findRoute() {
