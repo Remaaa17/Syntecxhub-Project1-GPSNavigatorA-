@@ -14,9 +14,11 @@ This project implements a real-world GPS navigation system using the A* (A-star)
 
 ## Demo Video
 
-https://github.com/Remaaa17/Syntecxhub-Project1-GPSNavigatorA-/assets/Demo.mp4
+![Demo Video](Demo.mp4)
 
 > Watch the full demonstration of the GPS Navigator in action, showing route planning, traffic simulation, and interactive map features.
+
+**Note:** If the video doesn't play above, you can [download it here](Demo.mp4) or view it directly in the repository files.
 
 ## Presentation
 
