@@ -259,15 +259,30 @@
         .directions-list {
             max-height: 300px;
             overflow-y: auto;
+            overflow-x: hidden;
             scrollbar-width: thin;
+        }
+        
+        .directions-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .directions-list::-webkit-scrollbar-track {
+            background: var(--slate-50);
+        }
+        
+        .directions-list::-webkit-scrollbar-thumb {
+            background: var(--slate-300);
+            border-radius: 3px;
         }
         
         .direction-step {
             display: flex;
-            align-items: start;
-            padding: 0.75rem;
+            align-items: flex-start;
+            padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--slate-100);
             transition: background 0.2s;
+            position: relative;
         }
         
         .direction-step:hover {
@@ -279,6 +294,7 @@
         }
         
         .step-icon {
+            min-width: 32px;
             width: 32px;
             height: 32px;
             background: var(--slate-100);
@@ -288,15 +304,18 @@
             justify-content: center;
             margin-right: 0.75rem;
             flex-shrink: 0;
+            overflow: hidden;
         }
         
         .step-icon i {
             font-size: 0.875rem;
             color: var(--primary-indigo);
+            line-height: 1;
         }
         
         .step-content {
             flex: 1;
+            min-width: 0;
         }
         
         .step-instruction {
