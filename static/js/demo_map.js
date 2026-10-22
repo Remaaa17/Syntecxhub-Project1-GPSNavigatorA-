@@ -1,4 +1,4 @@
-// Demo GPS Navigator - Simple JavaScript for demo version
+// Demo GPS Navigator - Modern UI JavaScript
 
 let map;
 let routeLayer;
@@ -21,7 +21,7 @@ function initMap() {
     // Add click handler
     map.on('click', function(e) {
         if (!mapLoaded) {
-            alert('Please generate the sample city first!');
+            showToast('Please load a map first!', 'warning');
             return;
         }
         
@@ -30,10 +30,48 @@ function initMap() {
         } else if (!endCoords) {
             setEndPoint(e.latlng.lat, e.latlng.lng);
         } else {
-            alert('Clear the route to set new points');
+            showToast('Clear the route to set new points', 'info');
         }
     });
 }
+
+// Show toast notification
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: ${type === 'success' ? '#10B981' : type === 'warning' ? '#F59E0B' : '#4F46E5'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Add animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
 
 // Set start point
 function setStartPoint(lat, lng) {
@@ -98,6 +136,59 @@ async function loadMap() {
     const useRealData = selectedOption.dataset.real === 'true';
     
     statusDiv.innerHTML = `
+        <div class="status-badge status-badge-info w-100 justify-content-center">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            <span>Loading map...</span>
+        </div>
+    `;
+    loadBtn.disabled = true;
+    loadBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Loading...';
+    
+    try {
+        const response = await fetch('/api/load_map', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                place_name: selectedCity,
+                use_real_data: useRealData
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            mapLoaded = true;
+            showToast('Map loaded successfully!', 'success');
+            
+            // Update stats with modern KPI layout
+            document.getElementById('mapStats').style.display = 'block';
+            document.getElementById('statNodes').textContent = data.stats.num_nodes.toLocaleString();
+            document.getElementById('statEdges').textContent = data.stats.num_edges.toLocaleString();
+            document.getElementById('dataSource').textContent = data.stats.data_source;
+            
+            // Center map
+            if (data.bounds) {
+                map.setView(data.bounds.center, 14);
+            }
+            
+            statusDiv.innerHTML = '';
+        } else {
+            throw new Error(data.error || 'Failed to load map');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error loading map: ' + error.message, 'warning');
+        statusDiv.innerHTML = `
+            <div class="status-badge status-badge-info w-100 justify-content-center" style="background: #FEE2E2; color: #991B1B; border-color: #FECACA;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Failed to load</span>
+            </div>
+        `;
+    } finally {
+        loadBtn.disabled = false;
+        loadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Load Map';
+    }
+}
         <div class="alert alert-info">
             <div class="spinner-border spinner-border-sm me-2"></div>
             ${useRealData ? 'Downloading real map data...' : 'Generating sample data...'}
@@ -222,54 +313,89 @@ function displayRoute(route) {
         map.removeLayer(routeLayer);
     }
     
-    // Draw route
+    // Draw route with modern styling
     const coordinates = route.coordinates.map(c => [c[0], c[1]]);
     routeLayer = L.polyline(coordinates, {
-        color: '#007bff',
-        weight: 5,
-        opacity: 0.7
+        color: '#4F46E5',
+        weight: 6,
+        opacity: 0.8,
+        lineJoin: 'round'
     }).addTo(map);
     
     // Fit map to route
-    map.fitBounds(routeLayer.getBounds());
+    map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
     
-    // Display info
+    // Display modern route summary
     const routeInfoDiv = document.getElementById('routeInfo');
     routeInfoDiv.innerHTML = `
-        <div class="alert alert-success">
-            <h6>✓ Route Found!</h6>
+        <div class="kpi-container mb-3">
+            <div class="kpi-card">
+                <div class="kpi-icon">
+                    <i class="fas fa-route"></i>
+                </div>
+                <div class="kpi-label">Distance</div>
+                <div class="kpi-value" style="font-size: 1.5rem;">${route.distance_km.toFixed(2)}</div>
+                <div class="step-distance">kilometers</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="kpi-label">ETA</div>
+                <div class="kpi-value" style="font-size: 1.5rem;">${Math.round(route.travel_time_minutes)}</div>
+                <div class="step-distance">minutes</div>
+            </div>
         </div>
-        <div class="mb-2">
-            <strong>Type:</strong> ${route.type}
-        </div>
-        <div class="mb-2">
-            <strong>Distance:</strong> ${route.distance_km.toFixed(2)} km
-        </div>
-        <div class="mb-2">
-            <strong>Travel Time:</strong> ${route.travel_time_minutes.toFixed(1)} minutes
-        </div>
-        <div class="mb-2">
-            <strong>Path Length:</strong> ${route.path.length} nodes
+        <div class="status-badge status-badge-success w-100 justify-content-center">
+            <i class="fas fa-check-circle"></i>
+            <span>Optimal Route Found</span>
         </div>
     `;
     
-    // Show algorithm stats
-    document.getElementById('algoStats').style.display = 'block';
+    // Show algorithm stats with fade-in animation
+    const algoStatsDiv = document.getElementById('algoStats');
+    const algoStatsEmpty = document.getElementById('algoStatsEmpty');
+    
+    if (algoStatsEmpty) algoStatsEmpty.style.display = 'none';
+    algoStatsDiv.style.display = 'block';
+    algoStatsDiv.classList.add('fade-in');
+    
     document.getElementById('nodesExplored').textContent = route.nodes_explored.toLocaleString();
     document.getElementById('pathLength').textContent = route.path.length;
     
-    // Show directions
-    let directionsHTML = '<h6>Turn-by-Turn Directions:</h6><ol>';
+    // Show modern turn-by-turn directions
+    let directionsHTML = '<div class="directions-list">';
     route.turn_by_turn.forEach((step, i) => {
-        if (i < 10) {  // Show first 10 steps
-            directionsHTML += `<li>${step.instruction}</li>`;
+        if (i < 15) {  // Show first 15 steps
+            directionsHTML += `
+                <div class="direction-step">
+                    <div class="step-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-instruction">${step.instruction}</div>
+                        <div class="step-distance">${(step.distance / 1000).toFixed(2)} km</div>
+                    </div>
+                </div>
+            `;
         }
     });
-    if (route.turn_by_turn.length > 10) {
-        directionsHTML += `<li><em>... and ${route.turn_by_turn.length - 10} more steps</em></li>`;
+    if (route.turn_by_turn.length > 15) {
+        directionsHTML += `
+            <div class="direction-step" style="opacity: 0.6;">
+                <div class="step-icon">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-instruction">and ${route.turn_by_turn.length - 15} more steps...</div>
+                </div>
+            </div>
+        `;
     }
-    directionsHTML += '</ol>';
+    directionsHTML += '</div>';
     document.getElementById('directions').innerHTML = directionsHTML;
+    
+    showToast('Route calculated successfully!', 'success');
 }
 
 // Clear route
@@ -287,6 +413,30 @@ function clearRoute() {
     startCoords = null;
     endCoords = null;
     currentRoute = null;
+    
+    // Reset UI to empty states
+    document.getElementById('routeInfo').innerHTML = `
+        <div class="empty-state">
+            <i class="fas fa-route"></i>
+            <p class="mb-0">No route calculated</p>
+        </div>
+    `;
+    
+    document.getElementById('algoStats').style.display = 'none';
+    if (document.getElementById('algoStatsEmpty')) {
+        document.getElementById('algoStatsEmpty').style.display = 'block';
+    }
+    
+    document.getElementById('directions').innerHTML = `
+        <div class="empty-state">
+            <i class="fas fa-directions"></i>
+            <p class="mb-0" style="font-size: 0.875rem;">Directions will appear here</p>
+        </div>
+    `;
+    
+    showToast('Route cleared', 'info');
+    console.log('Route cleared');
+}
     
     document.getElementById('routeInfo').innerHTML = `
         <div class="text-center text-muted py-4">

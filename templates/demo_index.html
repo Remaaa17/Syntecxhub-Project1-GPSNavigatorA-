@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPS Navigator Demo - A* Pathfinding</title>
+    <title>GPS Navigator - A* Route Planning Platform</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -16,154 +16,558 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Modern SaaS Dashboard Styles */
+        :root {
+            --primary-indigo: #4F46E5;
+            --primary-indigo-dark: #4338CA;
+            --slate-50: #F8FAFC;
+            --slate-100: #F1F5F9;
+            --slate-200: #E2E8F0;
+            --slate-300: #CBD5E1;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1E293B;
+            --slate-900: #0F172A;
+            --success-green: #10B981;
+            --warning-amber: #F59E0B;
+        }
+        
+        body {
+            background-color: var(--slate-50);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--slate-700);
+        }
+        
+        /* Top Header Bar */
+        .top-header {
+            background: white;
+            border-bottom: 1px solid var(--slate-200);
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+        
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin: 0;
+        }
+        
+        .demo-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(90deg, #EEF2FF 0%, #E0E7FF 100%);
+            border-left: 4px solid var(--primary-indigo);
+            padding: 0.875rem 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            color: var(--slate-700);
+        }
+        
+        .info-banner strong {
+            color: var(--primary-indigo);
+        }
+        
+        /* Main Layout */
+        .sidebar {
+            width: 340px;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        
+        .main-content {
+            flex: 1;
+        }
+        
+        /* Modern Cards */
+        .modern-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .card-header-clean {
+            background: white;
+            border-bottom: 1px solid var(--slate-200);
+            padding: 1rem 1.25rem;
+        }
+        
+        .card-header-clean h5 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--slate-900);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0;
+        }
+        
+        .card-body-clean {
+            padding: 1.25rem;
+        }
+        
+        /* KPI Stats */
+        .kpi-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .kpi-card {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .kpi-label {
+            font-size: 0.75rem;
+            color: var(--slate-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+        
+        .kpi-icon {
+            font-size: 1.25rem;
+            color: var(--primary-indigo);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            gap: 0.5rem;
+        }
+        
+        .status-badge-success {
+            background: #DCFCE7;
+            color: #166534;
+            border: 1px solid #BBF7D0;
+        }
+        
+        .status-badge-info {
+            background: #DBEAFE;
+            color: #1E40AF;
+            border: 1px solid #BFDBFE;
+        }
+        
+        /* Modern Buttons */
+        .btn-primary-modern {
+            background: var(--primary-indigo);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary-modern:hover {
+            background: var(--primary-indigo-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-outline-modern {
+            background: white;
+            color: var(--slate-700);
+            border: 1px solid var(--slate-300);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-outline-modern:hover {
+            background: var(--slate-50);
+            border-color: var(--slate-400);
+            color: var(--slate-900);
+        }
+        
+        /* Form Elements */
+        .form-label-modern {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--slate-700);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-select-modern,
+        .form-control-modern {
+            border: 1px solid var(--slate-300);
+            border-radius: 0.5rem;
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .form-select-modern:focus,
+        .form-control-modern:focus {
+            border-color: var(--primary-indigo);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        /* Map Container */
+        .map-container {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        #map {
+            height: 65vh;
+            min-height: 500px;
+        }
+        
+        /* Directions List */
+        .directions-list {
+            max-height: 300px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        
+        .direction-step {
+            display: flex;
+            align-items: start;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--slate-100);
+            transition: background 0.2s;
+        }
+        
+        .direction-step:hover {
+            background: var(--slate-50);
+        }
+        
+        .direction-step:last-child {
+            border-bottom: none;
+        }
+        
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--slate-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .step-icon i {
+            font-size: 0.875rem;
+            color: var(--primary-indigo);
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-instruction {
+            font-size: 0.875rem;
+            color: var(--slate-700);
+            margin-bottom: 0.25rem;
+        }
+        
+        .step-distance {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--slate-400);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Loading Spinner */
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.15rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 991px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                top: 0;
+            }
+            
+            #map {
+                height: 400px;
+            }
+        }
+        
+        /* Info Pill */
+        .info-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--slate-100);
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            color: var(--slate-600);
+        }
+        
+        /* Subtle Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-dark bg-gradient sticky-top shadow-lg">
-        <div class="container-fluid">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-map-marked-alt fa-2x text-warning me-3"></i>
-                <div>
-                    <span class="navbar-brand mb-0 h4">GPS Navigator Demo</span>
-                    <div class="small text-light opacity-75">A* Pathfinding System (Sample Data)</div>
+    <!-- Top Header Bar -->
+    <header class="top-header">
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas fa-route text-primary" style="font-size: 1.5rem; color: var(--primary-indigo) !important;"></i>
+                        <h1 class="app-title">GPS Navigator</h1>
+                    </div>
+                    <span class="demo-badge">Demo</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="info-pill">
+                        <i class="fas fa-brain"></i>
+                        A* Algorithm
+                    </span>
                 </div>
             </div>
-            <span class="badge bg-warning text-dark">Demo Version</span>
         </div>
-    </nav>
+    </header>
 
-    <div class="container-fluid mt-3">
-        <div class="alert alert-success border-success">
-            <i class="fas fa-rocket me-2"></i>
-            <strong>✨ NEW:</strong> Now supports REAL OpenStreetMap data! Switch between sample and real maps below.
+    <div class="container-fluid px-4 py-3">
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas fa-info-circle"></i>
+                    <span><strong>Real OpenStreetMap Integration:</strong> Switch between sample data and actual city maps for route planning</span>
+                </div>
+                <button type="button" class="btn-close btn-sm" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>
+            </div>
         </div>
 
-        <div class="row">
-            <!-- Control Panel -->
-            <div class="col-lg-4">
-                <div class="card mb-3 border-0 shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="fas fa-globe me-2"></i>Load Map Data</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">
-                                <i class="fas fa-map-marker-alt text-primary"></i> Select Area:
-                            </label>
-                            <select id="citySelect" class="form-select mb-2">
-                                <option value="Sample City" data-real="false">🎲 Sample Generated Data</option>
-                                <optgroup label="📍 Real OpenStreetMap Data">
-                                    <option value="cairo_tahrir" data-real="true">Cairo - Tahrir Square (Small)</option>
-                                    <option value="cairo_center" data-real="true">Cairo - City Center</option>
-                                    <option value="cairo_zamalek" data-real="true">Cairo - Zamalek</option>
-                                    <option value="giza_pyramids" data-real="true">Giza - Pyramids Area</option>
-                                    <option value="alexandria_center" data-real="true">Alexandria - Center</option>
-                                    <option value="sample_small" data-real="true">Test Area (Tiny)</option>
-                                </optgroup>
-                            </select>
+        <div class="row g-4">
+            <!-- Left Sidebar -->
+            <div class="col-lg-auto">
+                <div class="sidebar">
+                    <!-- Map Controls Card -->
+                    <!-- Map Controls Card -->
+                    <div class="modern-card">
+                        <div class="card-header-clean">
+                            <h5>Map Controls</h5>
                         </div>
-                        
-                        <button id="loadMapBtn" class="btn btn-primary w-100 btn-lg">
-                            <i class="fas fa-download me-2"></i>Load Map
-                        </button>
-                        
-                        <div id="mapStatus" class="mt-3"></div>
-                        <div id="mapStats" class="mt-3" style="display: none;">
-                            <div class="alert alert-light border">
-                                <strong id="dataSource">Data Source</strong>
+                        <div class="card-body-clean">
+                            <div class="mb-3">
+                                <label class="form-label-modern">Select Area</label>
+                                <select id="citySelect" class="form-select form-select-modern">
+                                    <option value="Sample City" data-real="false">🎲 Sample Generated Data</option>
+                                    <optgroup label="Real OpenStreetMap Data">
+                                        <option value="cairo_tahrir" data-real="true">Cairo - Tahrir Square</option>
+                                        <option value="cairo_center" data-real="true">Cairo - City Center</option>
+                                        <option value="cairo_zamalek" data-real="true">Cairo - Zamalek</option>
+                                        <option value="giza_pyramids" data-real="true">Giza - Pyramids Area</option>
+                                        <option value="alexandria_center" data-real="true">Alexandria - Center</option>
+                                        <option value="sample_small" data-real="true">Test Area (Tiny)</option>
+                                    </optgroup>
+                                </select>
                             </div>
-                            <div class="stats-mini">
-                                <div class="stat-mini-item">
-                                    <i class="fas fa-project-diagram text-primary"></i>
-                                    <span id="statNodes">0</span>
-                                    <small>Nodes</small>
+                            
+                            <button id="loadMapBtn" class="btn btn-primary-modern w-100">
+                                <i class="fas fa-download me-2"></i>Load Map
+                            </button>
+                            
+                            <div id="mapStatus" class="mt-3"></div>
+                            
+                            <div id="mapStats" class="mt-3" style="display: none;">
+                                <div class="status-badge status-badge-success w-100 justify-content-center mb-3">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span id="dataSource">Map Loaded!</span>
                                 </div>
-                                <div class="stat-mini-item">
-                                    <i class="fas fa-road text-success"></i>
-                                    <span id="statEdges">0</span>
-                                    <small>Roads</small>
+                                
+                                <div class="kpi-container">
+                                    <div class="kpi-card">
+                                        <div class="kpi-icon">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                        <div class="kpi-label">Nodes</div>
+                                        <div class="kpi-value" id="statNodes">0</div>
+                                    </div>
+                                    <div class="kpi-card">
+                                        <div class="kpi-icon">
+                                            <i class="fas fa-road"></i>
+                                        </div>
+                                        <div class="kpi-label">Roads</div>
+                                        <div class="kpi-value" id="statEdges">0</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card mb-3 border-0 shadow">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="fas fa-route me-2"></i>Route Planning</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted small">
-                            <i class="fas fa-mouse-pointer me-1"></i> Click on the map to set start and end points
-                        </p>
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">
-                                <i class="fas fa-sliders-h text-primary"></i> Route Type:
-                            </label>
-                            <select id="routeType" class="form-select">
-                                <option value="fastest">⚡ Fastest Route</option>
-                                <option value="shortest">📏 Shortest Distance</option>
-                            </select>
+                    <!-- Route Planning Card -->
+                    <div class="modern-card">
+                        <div class="card-header-clean">
+                            <h5>Route Planning</h5>
                         </div>
+                        <div class="card-body-clean">
+                            <div class="status-badge status-badge-info w-100 justify-content-center mb-3">
+                                <i class="fas fa-mouse-pointer"></i>
+                                <span>Click map to set points</span>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label-modern">Route Type</label>
+                                <select id="routeType" class="form-select form-select-modern">
+                                    <option value="fastest">⚡ Fastest Route</option>
+                                    <option value="shortest">📏 Shortest Distance</option>
+                                </select>
+                            </div>
 
-                        <div class="d-grid gap-2">
-                            <button id="findRouteBtn" class="btn btn-success btn-lg">
-                                <i class="fas fa-search-location me-2"></i>Find Route
-                            </button>
-                            <button id="clearRouteBtn" class="btn btn-outline-warning">
-                                <i class="fas fa-eraser me-2"></i>Clear Route
-                            </button>
+                            <div class="d-grid gap-2">
+                                <button id="findRouteBtn" class="btn btn-primary-modern">
+                                    <i class="fas fa-search-location me-2"></i>Find Route
+                                </button>
+                                <button id="clearRouteBtn" class="btn btn-outline-modern">
+                                    <i class="fas fa-eraser me-2"></i>Clear Route
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card border-0 shadow">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Route Information</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="routeInfo">
-                            <div class="text-center text-muted py-4">
-                                <i class="fas fa-route fa-3x mb-3 opacity-25"></i>
-                                <p>No route calculated yet</p>
+                    <!-- Route Summary Card -->
+                    <div class="modern-card">
+                        <div class="card-header-clean">
+                            <h5>Route Summary</h5>
+                        </div>
+                        <div class="card-body-clean">
+                            <div id="routeInfo">
+                                <div class="empty-state">
+                                    <i class="fas fa-route"></i>
+                                    <p class="mb-0">No route calculated</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Map Display -->
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="fas fa-map text-primary"></i> Interactive Map</h5>
+            <!-- Main Content Area -->
+            <div class="col">
+                <div class="main-content">
+                    <!-- Interactive Map -->
+                    <div class="map-container mb-3">
+                        <div id="map"></div>
                     </div>
-                    <div class="card-body p-0">
-                        <div id="map" style="height: 70vh;"></div>
-                    </div>
-                </div>
 
-                <div class="card mt-3 border-0 shadow">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="fas fa-directions text-success"></i> Algorithm Stats</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="algoStats" style="display: none;">
-                            <div class="alert alert-success">
-                                <h6><i class="fas fa-brain me-2"></i>A* Algorithm Performance</h6>
-                                <div class="d-flex justify-content-between">
-                                    <span>Nodes Explored:</span>
-                                    <strong id="nodesExplored">0</strong>
+                    <!-- Bottom Panel: Algorithm Stats & Directions -->
+                    <div class="row g-3">
+                        <!-- Algorithm Stats -->
+                        <div class="col-md-5">
+                            <div class="modern-card">
+                                <div class="card-header-clean">
+                                    <h5>Algorithm Performance</h5>
                                 </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Path Length:</span>
-                                    <strong id="pathLength">0</strong>
+                                <div class="card-body-clean">
+                                    <div id="algoStats" style="display: none;">
+                                        <div class="kpi-container mb-3">
+                                            <div class="kpi-card">
+                                                <div class="kpi-icon">
+                                                    <i class="fas fa-brain"></i>
+                                                </div>
+                                                <div class="kpi-label">Nodes Explored</div>
+                                                <div class="kpi-value" id="nodesExplored">0</div>
+                                            </div>
+                                            <div class="kpi-card">
+                                                <div class="kpi-icon">
+                                                    <i class="fas fa-route"></i>
+                                                </div>
+                                                <div class="kpi-label">Path Length</div>
+                                                <div class="kpi-value" id="pathLength">0</div>
+                                            </div>
+                                        </div>
+                                        <div class="status-badge status-badge-success w-100 justify-content-center">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Route Found!</span>
+                                        </div>
+                                    </div>
+                                    <div id="algoStatsEmpty" class="empty-state" style="padding: 2rem 1rem;">
+                                        <i class="fas fa-brain"></i>
+                                        <p class="mb-0" style="font-size: 0.875rem;">Run pathfinding to see stats</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="directions">
-                            <p class="text-muted">Route directions will appear here</p>
+
+                        <!-- Turn-by-Turn Directions -->
+                        <div class="col-md-7">
+                            <div class="modern-card">
+                                <div class="card-header-clean">
+                                    <h5>Turn-by-Turn Directions</h5>
+                                </div>
+                                <div class="card-body-clean p-0">
+                                    <div id="directions">
+                                        <div class="empty-state">
+                                            <i class="fas fa-directions"></i>
+                                            <p class="mb-0" style="font-size: 0.875rem;">Directions will appear here</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
