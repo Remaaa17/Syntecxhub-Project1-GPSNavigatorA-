@@ -8,43 +8,43 @@
 
 **Syntecxhub AI Internship - Week 1 Project**
 
-## 🎯 Project Overview
+## Project Overview
 
 This project implements a real-world GPS navigation system using the A* (A-star) pathfinding algorithm. It finds optimal routes between locations in real cities using actual map data from OpenStreetMap, simulates traffic conditions, and provides multiple route options.
 
-## ✨ Features
+## Features
 
 ### Core Features (Phase 1)
-- ✅ **Real Map Data**: Downloads actual street networks from OpenStreetMap
-- ✅ **A* Pathfinding**: Implements A* algorithm with multiple heuristics
+- **Real Map Data**: Downloads actual street networks from OpenStreetMap
+- **A* Pathfinding**: Implements A* algorithm with multiple heuristics
   - Euclidean distance
   - Manhattan distance
   - Haversine distance (for geographic coordinates)
-- ✅ **Interactive Visualization**: Web-based interface with interactive maps
-- ✅ **Geocoding**: Convert addresses to coordinates and vice versa
+- **Interactive Visualization**: Web-based interface with interactive maps
+- **Geocoding**: Convert addresses to coordinates and vice versa
 
 ### Advanced Features (Phase 2)
-- ✅ **Traffic Simulation**: Realistic traffic conditions based on:
+- **Traffic Simulation**: Realistic traffic conditions based on:
   - Time of day (rush hour, midday, night)
   - Day of week (weekday vs weekend)
   - Road type (highway, residential, etc.)
-- ✅ **Multiple Route Options**:
-  - 🚀 Fastest route (minimal travel time)
-  - 📏 Shortest route (minimal distance)
-  - 🛣️ Highway-free route
-  - 🌳 Scenic route (prefers smaller roads)
-  - ⛽ Fuel-efficient route
-- ✅ **Turn-by-turn Directions**: Step-by-step navigation instructions
-- ✅ **ETA Calculation**: Estimated time of arrival
+- **Multiple Route Options**:
+  - Fastest route (minimal travel time)
+  - Shortest route (minimal distance)
+  - Highway-free route
+  - Scenic route (prefers smaller roads)
+  - Fuel-efficient route
+- **Turn-by-turn Directions**: Step-by-step navigation instructions
+- **ETA Calculation**: Estimated time of arrival
 
 ### Extra Features (Phase 3)
-- ✅ **Web Interface**: Professional Flask-based web application
-- ✅ **Interactive Map**: Click to set start/end points
-- ✅ **Route Comparison**: Compare all route options side-by-side
-- ✅ **Traffic Report**: Real-time traffic statistics
-- ✅ **Map Caching**: Faster loading with cached map data
+- **Web Interface**: Professional Flask-based web application
+- **Interactive Map**: Click to set start/end points
+- **Route Comparison**: Compare all route options side-by-side
+- **Traffic Report**: Real-time traffic statistics
+- **Map Caching**: Faster loading with cached map data
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 Syntecxhub_GPS_Navigator/
@@ -65,7 +65,7 @@ Syntecxhub_GPS_Navigator/
 └── README.md            # This file
 ```
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -93,7 +93,7 @@ python app.py
 
 The application will start on `http://localhost:5000`
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### 1. Load Map Data
 1. Select a city from the dropdown (default: Piedmont, CA)
@@ -121,7 +121,7 @@ The application will start on `http://localhost:5000`
 - Click on any route card to view it on the map
 - Compare distance, time, and other metrics
 
-## 🧪 Testing the Application
+## Testing the Application
 
 ### Test Case 1: Basic Pathfinding
 ```python
@@ -149,7 +149,7 @@ Expected: Route found with distance ~5-7 km
 - Scenic: Residential areas, ~6 km
 ```
 
-## 🎓 Algorithm Details
+## Algorithm Details
 
 ### A* Algorithm Implementation
 
@@ -185,7 +185,7 @@ Where:
    Uses latitude/longitude for accurate distances
    ```
 
-## 📊 Technical Specifications
+## Technical Specifications
 
 ### Technologies Used
 - **Backend**: Python, Flask
@@ -201,7 +201,7 @@ Where:
 - Map loading: 10-60 seconds (cached afterwards)
 - Memory usage: ~200-500 MB (including map data)
 
-## 🌟 Advanced Features Explained
+## Advanced Features Explained
 
 ### Traffic Simulation
 The system simulates realistic traffic by:
@@ -217,7 +217,7 @@ Different optimization criteria:
 - **Fuel**: Balances speed and distance for efficiency
 - **Scenic**: Prefers smaller, quieter roads
 
-## 🔧 Configuration
+## Configuration
 
 ### Adding New Cities
 Edit `map_data.py` and add to `get_popular_cities()`:
@@ -231,7 +231,7 @@ Edit `traffic_simulator.py` and modify:
 - Rush hour time ranges
 - Traffic severity factors
 
-## 📝 Future Enhancements
+## Future Enhancements
 
 Potential improvements:
 - [ ] Real-time traffic data integration
@@ -243,7 +243,7 @@ Potential improvements:
 - [ ] Route sharing functionality
 - [ ] Historical traffic patterns
 
-## 🤝 Contributing
+## Contributing
 
 This is an internship project, but suggestions are welcome!
 
@@ -253,24 +253,24 @@ This is an internship project, but suggestions are welcome!
 4. Push to the branch
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is created as part of Syntecxhub AI Internship Program.
 
-## 👨‍💻 Author
+## Author
 
-**Your Name**
+**Eng. Reem Osama**
 - Syntecxhub AI Internship - Week 1
 - Project: GPS Navigation with A* Algorithm
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - OpenStreetMap for map data
 - OSMnx library for easy map access
 - Syntecxhub for the internship opportunity
 - A* algorithm pioneers: Peter Hart, Nils Nilsson, Bertram Raphael
 
-## 📧 Contact
+## Contact
 
 For questions or feedback about this project:
 - Email: info@syntecxhub.com
@@ -279,6 +279,6 @@ For questions or feedback about this project:
 
 ---
 
-**⭐ Star this repository if you find it helpful!**
+Star this repository if you find it helpful!
 
-**📢 Don't forget to share on LinkedIn and mention @Syntecxhub!**
+Don't forget to share on LinkedIn and mention @Syntecxhub!
