@@ -18,6 +18,18 @@ https://github.com/Remaaa17/Syntecxhub-Project1-GPSNavigatorA-/assets/Demo.mp4
 
 > Watch the full demonstration of the GPS Navigator in action, showing route planning, traffic simulation, and interactive map features.
 
+## Presentation
+
+📊 **[Download Project Presentation (PowerPoint)](Presentation.pptx)**
+
+The presentation includes:
+- Project overview and objectives
+- A* algorithm explanation
+- System architecture and design
+- Features demonstration
+- Technical implementation details
+- Results and conclusions
+
 ## Features
 
 ### Core Features (Phase 1)
