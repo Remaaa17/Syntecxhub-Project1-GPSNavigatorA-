@@ -22,7 +22,9 @@ This project implements a real-world GPS navigation system using the A* (A-star)
 
 ## Presentation
 
-📊 **[Download Project Presentation (PowerPoint)](Presentation.pptx)**
+📊 **Project Presentation - Available in Multiple Formats:**
+- **[PowerPoint (.pptx)](Presentation.pptx)** - Editable presentation file
+- **[PDF (.pdf)](Presentation.pdf)** - Universal format, view on any device
 
 The presentation includes:
 - Project overview and objectives
